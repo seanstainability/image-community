@@ -2,15 +2,16 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA0olm-KRlbI4Efq4zi9R1syqDL2xReJsE",
-  authDomain: "image-community-244f6.firebaseapp.com",
-  projectId: "image-community-244f6",
-  storageBucket: "image-community-244f6.appspot.com",
-  messagingSenderId: "1041657171295",
-  appId: "1:1041657171295:web:9b31cf94fb2692d15abaea",
-  measurementId: "G-8F4DH9YMH6",
+  apiKey: "AIzaSyAoH0pa6rPynW1qNWJ6Xm8oL1REx85M7Q4",
+  authDomain: "image-community-49eb0.firebaseapp.com",
+  projectId: "image-community-49eb0",
+  storageBucket: "image-community-49eb0.appspot.com",
+  messagingSenderId: "685797289641",
+  appId: "1:685797289641:web:9f4dd5af163223765083b8",
+  measurementId: "G-BMYF0FCWVJ"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -19,5 +20,5 @@ const apiKey = firebaseConfig.apiKey;
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 const storage = firebase.storage();
-
-export{auth, apiKey, firestore, storage};
+const realtime = firebase.database();
+export{auth, apiKey, firestore, storage, realtime};
