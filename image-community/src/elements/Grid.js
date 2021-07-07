@@ -2,24 +2,43 @@ import React from "react";
 import styled from "styled-components";
 
 const Grid = (props) => {
-  const { is_flex, width, margin, padding, bg, children, center, _onClick } = props;
+  const {
+    is_flex,
+    width,
+    margin,
+    padding,
+    bg,
+    children,
+    center,
+    _onClick,
+    check,
+  } = props;
 
   const styles = {
-      is_flex: is_flex,
-      width: width,
-      margin: margin,
-      padding: padding,
-      bg: bg,
-      center: center,
+    is_flex: is_flex,
+    width: width,
+    margin: margin,
+    padding: padding,
+    bg: bg,
+    center: center,
   };
   return (
     <React.Fragment>
-      <GridBox {...styles} onClick={_onClick}>{children}</GridBox>
+      <GridBox
+        {...styles}
+        onClick={() => {
+          _onClick();
+          check();
+        }}
+      >
+        {children}
+      </GridBox>
     </React.Fragment>
   );
 };
 
 Grid.defaultProps = {
+  check: () => {},
   chidren: null,
   is_flex: false,
   width: "100%",
@@ -27,7 +46,7 @@ Grid.defaultProps = {
   margin: false,
   bg: false,
   center: false,
-  _onClick: () => {}
+  _onClick: () => {},
 };
 
 const GridBox = styled.div`
@@ -41,7 +60,7 @@ const GridBox = styled.div`
     props.is_flex
       ? `display: flex; align-items: center; justify-content: space-between; `
       : ""}
-  ${(props) => props.center? `text-align: center;`: ""}
+  ${(props) => (props.center ? `text-align: center;` : "")}
 `;
 
 export default Grid;

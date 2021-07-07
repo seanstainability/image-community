@@ -55,7 +55,7 @@ const PostWrite = (props) => {
         <Text size="16px">로그인 후에만 글을 쓸 수 있어요!</Text>
         <Button
           _onClick={() => {
-            history.replace("/");
+            history.replace("/login");
           }}
         >
           로그인 하러가기
@@ -66,6 +66,14 @@ const PostWrite = (props) => {
 
   return (
     <React.Fragment>
+      <Button
+        _onClick={() => {
+          props.history.goBack();
+        }}
+        color="B5EAEA"
+        width="10%"
+        margin="4px"
+      >←</Button>
       <Grid padding="16px">
         <Text margin="0px" size="36px" bold>
           {is_edit ? "게시글 수정" : "게시글 작성"}
@@ -82,7 +90,8 @@ const PostWrite = (props) => {
 
         <Image
           shape="rectangle"
-          src={preview ? preview : "http://via.placeholder.com/400x300"}
+          src={preview ? preview : "" }
+          hidden={preview ? false : true}
         />
       </Grid>
 

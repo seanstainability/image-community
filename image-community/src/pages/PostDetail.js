@@ -2,6 +2,7 @@ import React from "react";
 import Post from "../components/Post";
 import CommentList from "../components/CommentList";
 import CommentWrite from "../components/CommentWrite";
+import { Button } from '../elements';
 
 import Permit from "../shared/Permit";
 
@@ -30,6 +31,14 @@ const PostDetail = (props) => {
 
   return (
     <React.Fragment>
+      <Button
+        _onClick={() => {
+          props.history.goBack();
+        }}
+        color="B5EAEA"
+        width="10%"
+        margin="4px"
+      >←</Button>
       {post && (
         <Post {...post} is_me={post.user_info.user_id === user_info?.uid} />
       )}

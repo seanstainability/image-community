@@ -11,14 +11,15 @@ const firebaseConfig = {
   storageBucket: "image-community-49eb0.appspot.com",
   messagingSenderId: "685797289641",
   appId: "1:685797289641:web:9f4dd5af163223765083b8",
-  measurementId: "G-BMYF0FCWVJ"
+  measurementId: "G-BMYF0FCWVJ",
+  databaseURL: "https://image-community-49eb0-default-rtdb.firebaseio.com/",
 };
 
 firebase.initializeApp(firebaseConfig);
 
 const apiKey = firebaseConfig.apiKey;
-const auth = firebase.auth();
+const auth = firebase.auth(); // 로그인 인증
 const firestore = firebase.firestore();
 const storage = firebase.storage();
 const realtime = firebase.database();
-export{auth, apiKey, firestore, storage, realtime};
+export { auth, apiKey, firestore, storage, realtime };

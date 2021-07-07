@@ -27,7 +27,7 @@ const PostList = (props) => {
 
     return (
       <React.Fragment>
-        <Grid bg={"#EFF6FF"} padding="20px 0px">
+        <Grid bg={"#EDF6E5"}>
           {/* <Post/> */}
           <InfinityScroll
             callNext={() => {
@@ -41,7 +41,7 @@ const PostList = (props) => {
                 return (
                   <Grid
                     bg="#ffffff"
-                    margin="8px 0px"
+                    margin="0 0 16px 0"
                     key={p.id}
                     _onClick={() => {
                       history.push(`/post/${p.id}`);
@@ -54,6 +54,7 @@ const PostList = (props) => {
                 return (
                   <Grid
                     key={p.id}
+                    margin="0 0 16px 0"
                     bg="#ffffff"
                     _onClick={() => {
                       history.push(`/post/${p.id}`);

@@ -10,14 +10,19 @@ const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
 const EDIT_POST = "EDIT_POST";
 const LOADING = "LOADING";
+const DELETE_POST = "DELETE_POST";
 
-const setPost = createAction(SET_POST, (post_list, paging) => ({ post_list, paging }));
+const setPost = createAction(SET_POST, (post_list, paging) => ({
+  post_list,
+  paging,
+}));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
 const editPost = createAction(EDIT_POST, (post_id, post) => ({
   post_id,
   post,
 }));
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
+const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 
 const initialState = {
   list: [],
@@ -28,13 +33,30 @@ const initialState = {
 const initialPost = {
   // id: 0,
   // user_info: {
-  //   user_name: "mean0",
-  //   user_profile: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
+  //   user_name: "Sean",
+  //   user_profile: "",
   // },
-  image_url: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
+  image_url: "",
   contents: "",
   comment_cnt: 0,
   insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
+};
+
+const deletePostFB = (post_id = null) => {
+  return function (dispatch, getState, { history }) {
+    if (!post_id) {
+      console.log("게시물 정보가 없어요!");
+      return;
+    }
+    const postDB = firestore.collection("post");
+    postDB
+      .doc(post_id)
+      .delete()
+      .then((doc) => {
+        dispatch(deletePost(post_id));
+        window.location.href = "/";
+      });
+  };
 };
 
 const editPostFB = (post_id = null, post = {}) => {
@@ -118,6 +140,11 @@ const addPostFB = (contents = "") => {
     console.log(_image);
     console.log(typeof _image);
 
+    if (_image === null) {
+      window.alert("이미지를 업로드해주세요!");
+      return;
+    }
+
     const _upload = storage
       .ref(`images/${user_info.user_id}_${new Date().getTime()}`)
       .putString(_image, "data_url");
@@ -155,10 +182,9 @@ const addPostFB = (contents = "") => {
 
 const getPostFB = (start = null, size = 3) => {
   return function (dispatch, getState, { history }) {
-
     let _paging = getState().post.paging;
 
-    if(_paging.start && !_paging.next){
+    if (_paging.start && !_paging.next) {
       return;
     }
 
@@ -167,10 +193,9 @@ const getPostFB = (start = null, size = 3) => {
 
     let query = postDB.orderBy("insert_dt", "desc");
 
-    if(start){
+    if (start) {
       query = query.startAt(start);
     }
-
 
     query
       .limit(size + 1)
@@ -180,9 +205,12 @@ const getPostFB = (start = null, size = 3) => {
 
         let paging = {
           start: docs.docs[0],
-          next: docs.docs.length === size+1? docs.docs[docs.docs.length -1] : null,
+          next:
+            docs.docs.length === size + 1
+              ? docs.docs[docs.docs.length - 1]
+              : null,
           size: size,
-        }
+        };
 
         docs.forEach((doc) => {
           let _post = doc.data();
@@ -214,7 +242,7 @@ const getPostFB = (start = null, size = 3) => {
 };
 
 const getOnePostFB = (id) => {
-  return function(dispatch, getState, {history}){
+  return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
     postDB
       .doc(id)
@@ -239,8 +267,8 @@ const getOnePostFB = (id) => {
 
         dispatch(setPost([post]));
       });
-  }
-}
+  };
+};
 
 export default handleActions(
   {
@@ -249,19 +277,18 @@ export default handleActions(
         draft.list.push(...action.payload.post_list);
 
         draft.list = draft.list.reduce((acc, cur) => {
-          if(acc.findIndex(a => a.id === cur.id) === -1){
+          if (acc.findIndex((a) => a.id === cur.id) === -1) {
             return [...acc, cur];
-          }else{
+          } else {
             acc[acc.findIndex((a) => a.id === cur.id)] = cur;
             return acc;
           }
         }, []);
 
-
-        if(action.payload.paging){
+        if (action.payload.paging) {
           draft.paging = action.payload.paging;
         }
-        
+
         draft.is_loading = false;
       }),
 
@@ -275,9 +302,14 @@ export default handleActions(
 
         draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
       }),
-      [LOADING]: (state, action) => produce(state, (draft) => {
+    [LOADING]: (state, action) =>
+      produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading;
-      })
+      }),
+    [DELETE_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list.filter((p) => p.id !== action.payload.post_id);
+      }),
   },
   initialState
 );
@@ -290,6 +322,7 @@ const actionCreators = {
   addPostFB,
   editPostFB,
   getOnePostFB,
+  deletePostFB,
 };
 
 export { actionCreators };

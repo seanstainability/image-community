@@ -4,13 +4,14 @@ import { Grid, Image, Text } from "../elements";
 import { history } from "../redux/configureStore";
 
 const Card = (props) => {
-  const { image_url, user_name, post_id } = props;
+  const { image_url, user_name, post_id, check } = props;
 
   return (
     <Grid
       _onClick={() => {
         history.push(`/post/${post_id}`);
       }}
+      check={check}
       padding="16px"
       is_flex
       bg="#ffffff"
@@ -21,7 +22,7 @@ const Card = (props) => {
       </Grid>
       <Grid>
         <Text>
-          <b>{user_name}</b>님이 게시글에 댓글을 남겼습니다 :)!
+          <b>{user_name}</b>님이 게시글에 댓글을 남겼습니다!
         </Text>
       </Grid>
     </Grid>
@@ -32,6 +33,7 @@ Card.defaultProps = {
   image_url: "",
   user_name: "",
   post_id: null,
+  check: () => {},
 };
 
 export default Card;

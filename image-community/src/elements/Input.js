@@ -40,7 +40,7 @@ const Input = (props) => {
             onChange={_onChange}
             value={value}
             onKeyPress={(e) => {
-              if(e.key === "Enter"){
+              if (e.key === "Enter") {
                 onSubmit(e);
               }
             }}
@@ -67,6 +67,7 @@ Input.defaultProps = {
 const ElTextarea = styled.textarea`
   border: 1px solid #212121;
   width: 100%;
+  font-family: "Noto Serif KR", serif;
   padding: 12px 4px;
   box-sizing: border-box;
 `;
@@ -74,6 +75,7 @@ const ElTextarea = styled.textarea`
 const ElInput = styled.input`
   border: 1px solid #212121;
   width: 100%;
+  font-family: "Noto Serif KR", serif;
   padding: 12px 4px;
   box-sizing: border-box;
 `;

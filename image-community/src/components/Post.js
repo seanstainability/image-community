@@ -1,9 +1,11 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Grid, Image, Text, Button } from "../elements";
+import { actionCreators as postActions } from "../redux/modules/post";
+import { history } from "../redux/configureStore";
 
-import {history} from "../redux/configureStore";
-
- const Post = (props) => {
+const Post = (props) => {
+  const dispatch = useDispatch();
   return (
     <React.Fragment>
       <Grid>
@@ -15,11 +17,31 @@ import {history} from "../redux/configureStore";
           <Grid is_flex width="auto">
             <Text>{props.insert_dt}</Text>
             {props.is_me && (
-              <Button width="auto" margin="4px" padding="4px" _onClick={() => {
-                history.push(`/write/${props.id}`);
-              }}>
-                수정
-              </Button>
+              <>
+                <Button
+                  width="auto"
+                  margin="4px"
+                  padding="4px"
+                  _onClick={() => {
+                    history.push(`/write/${props.id}`);
+                  }}
+                >
+                  수정
+                </Button>
+                <Button
+                  width="auto"
+                  margin="4px"
+                  padding="4px"
+                  _onClick={() => {
+                    const result = window.confirm("정말로 삭제하시겠어요?");
+                    if (result) {
+                      dispatch(postActions.deletePostFB(props.id));
+                    }
+                  }}
+                >
+                  삭제
+                </Button>
+              </>
             )}
           </Grid>
         </Grid>
@@ -41,8 +63,8 @@ import {history} from "../redux/configureStore";
 
 Post.defaultProps = {
   user_info: {
-    user_name: "mean0",
-    user_profile: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
+    user_name: "Sean",
+    user_profile: "",
   },
   image_url: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
   contents: "고양이네요!",
