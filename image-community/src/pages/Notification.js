@@ -54,7 +54,12 @@ const Notification = (props) => {
     //     console.log(_noti_list);
     //     setNoti(_noti_list);
     //   } else {
-    notiDB.update({ read: true });
+    console.log(user.uid);
+    realtime.ref("noti/" + user.uid).set({
+      list: null,
+      read: true,
+    });
+    // notiDB.update({ read: true });
     // }
     // });
   }

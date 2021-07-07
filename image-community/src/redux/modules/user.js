@@ -3,7 +3,7 @@ import { produce } from "immer";
 
 import { setCookie, getCookie, deleteCookie } from "../../shared/Cookie";
 
-import { auth } from "../../shared/firebase";
+import { auth, realtime } from "../../shared/firebase";
 import firebase from "firebase/app";
 
 // actions
@@ -77,6 +77,12 @@ const signupFB = (id, pwd, user_name) => {
         auth.currentUser
           .updateProfile({
             displayName: user_name,
+          })
+          .then(() => {
+            realtime.ref("noti/" + user.user.uid).set({
+              list: null,
+              read: false,
+            });
           })
           .then(() => {
             dispatch(
